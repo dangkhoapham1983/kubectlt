@@ -1,0 +1,24 @@
+# download files
+node_modules
+packages
+# built files
+**/bin
+**/obj
+dist
+# user-specific files
+*.user
+.vs
+.vscode
+.idea
+# temp files
+__pycache__
+.DS_Store
+*.tmp
+*.log
+*.zip
+*.orig
+# secrets
+.env
+# non-production
+appsettings.Development.json
+**/launchSettings.json
