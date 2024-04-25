@@ -34,8 +34,8 @@ jobs:
       env:
         DOCKER_BUILDKIT: 1
       run: |
-        docker build -t ${{ secrets.ACR_URL }}/demo:${{ github.sha }} .
-        # docker push ${{ secrets.ACR_URL }}/demo:${{ github.sha }}
-        docker push khoapham1983/demo:${{ github.sha }}
+        docker build -t khoapham1983/demo:latest .
+        # docker push ${{ secrets.ACR_URL }}/demo:latest
+        docker push khoapham1983/demo:latest
         sed -i'' -e 's/ACR_URL/${{ secrets.ACR_URL }}/g' -e 's/AKS_URL/${{ secrets.AKS_URL }}/g' -e 's/IMAGE_LABEL/${{ github.sha }}/g' k8s.yaml
         kubectl apply -f k8s.yaml
