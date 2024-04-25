@@ -7,8 +7,8 @@ COPY LevelUpDevOps.csproj .
 RUN dotnet restore
 
 COPY . .
-RUN dotnet build -c Release -o /dist LevelUpDevOps.csproj
-RUN dotnet test -c Release
+RUN dotnet build -c Release LevelUpDevOps.csproj
+RUN dotnet test -c Release LevelUpDevOps.csproj
 RUN dotnet publish -c Release -o /dist LevelUpDevOps.csproj
 
 # production runtime "server" image
