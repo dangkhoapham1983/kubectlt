@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: levelupdevops
+  name: demo
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: levelupdevops
-      version: IMAGE_LABEL
+      app: demo
+      version: latest
   template:
     metadata:
       labels:
-        app: levelupdevops
-        version: IMAGE_LABEL
+        app: demo
+        version: latest
     spec:
       containers:
-      - name: levelupdevops
-        image: ACR_URL/levelupdevops:IMAGE_LABEL
+      - name: demo
+        image: khoapham1983/demo:latest
         resources: {}
         ports:
         - containerPort: 80
@@ -27,10 +27,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: levelupdevops
+  name: demo
 spec:
   selector:
-    app: levelupdevops
+    app: demo
   ports:
   - port: 80
     targetPort: 80
@@ -38,9 +38,9 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: levelupdevops
+  name: demo
   labels:
-    name: levelupdevops
+    name: demo
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
     acme.cert-manager.io/http01-edit-in-place: "true"
@@ -48,16 +48,16 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-      - levelupdevops.AKS_URL
+      - localhost
       secretName: tls-secret
   rules:
-    - host: levelupdevops.AKS_URL
-    - http:
+    - host: localhost
+      http:
         paths:
           - pathType: Prefix
             path: /
             backend:
               service:
-                name: levelupdevops
+                name: demo
                 port:
                   number: 80
