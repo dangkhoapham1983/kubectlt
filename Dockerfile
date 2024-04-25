@@ -1,24 +1,26 @@
-# build "server" image
-FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine as build
-
+# Build Stage
+FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
 WORKDIR /src
-
 COPY LevelUpDevOps.csproj .
 RUN dotnet restore
-
 COPY . .
-RUN dotnet build -c Release
-RUN dotnet test -c Release
-RUN dotnet publish -c Release -o /dist
+RUN dotnet build -c Release -o /app
 
-# production runtime "server" image
-FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine
+# Test Stage (optional)
+FROM build AS test
+WORKDIR /src
+RUN dotnet test
 
+# Publish Stage
+FROM build AS publish
+RUN dotnet publish -c Release -o /app
+
+# Runtime Stage
+FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine AS runtime
+WORKDIR /app
+COPY --from=publish /app .
 ENV ConnectionStrings__MyDB ""
 ENV ASPNETCORE_ENVIRONMENT Production
 ENV ASPNETCORE_URLS http://*:80
 EXPOSE 80
-
-WORKDIR /app
-COPY --from=build /dist .
-CMD ["dotnet", "LevelUpDevOps.dll"]
+ENTRYPOINT ["dotnet", "LevelUpDevOps.dll"]
