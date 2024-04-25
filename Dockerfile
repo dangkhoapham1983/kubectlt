@@ -4,7 +4,7 @@ WORKDIR /src
 COPY LevelUpDevOps.csproj .
 RUN dotnet restore
 COPY . .
-RUN dotnet build -c Release -o /app
+RUN dotnet build -c Release -o /app LevelUpDevOps.csproj
 
 # Test Stage (optional)
 FROM build AS test
