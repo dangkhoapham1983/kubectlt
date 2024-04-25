@@ -1,10 +1,10 @@
 # Build Stage
 FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
 WORKDIR /src
-COPY LevelUpDevOps.csproj .
+COPY kubectlt.sln .
 RUN dotnet restore
 COPY . .
-RUN dotnet build -c Release -o /app LevelUpDevOps.csproj
+RUN dotnet build -c Release -o /app kubectlt.sln
 
 # Test Stage (optional)
 FROM build AS test
